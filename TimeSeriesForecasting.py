@@ -210,7 +210,7 @@ def plot_preds(trainer, dset, plot_dir, num_plots=10, plot_prefix="valid", chann
 
 
 def zero_shot():
-    model = TinyTimeMixerForPrediction.from_pretrained("ibm-granite/granite-timeseries-ttm-r1", revision="main")
+    model = TinyTimeMixerForPrediction.from_pretrained("ibm-granite/granite-timeseries-ttm-r2", revision="main")
 
 
 
