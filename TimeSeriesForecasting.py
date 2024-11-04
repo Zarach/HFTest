@@ -26,8 +26,8 @@ column_specifiers = {
 
 tsp = TimeSeriesPreprocessor(
     **column_specifiers,
-    context_length=512,
-    prediction_length=96,
+    context_length=96,
+    prediction_length=24,
     scaling=True,
     encode_categorical=False,
     scaler_type="standard",
@@ -47,7 +47,7 @@ def fewshot_finetune_eval(
         dataset_name,
         batch_size,
         learning_rate=0.001,
-        context_length=512,
+        context_length=96,
         forecast_length=24,
         fewshot_percent=20,
         freeze_backbone=True,
