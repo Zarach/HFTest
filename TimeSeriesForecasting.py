@@ -48,10 +48,10 @@ def fewshot_finetune_eval(
         batch_size,
         learning_rate=0.001,
         context_length=512,
-        forecast_length=96,
-        fewshot_percent=5,
+        forecast_length=24,
+        fewshot_percent=20,
         freeze_backbone=True,
-        num_epochs=50,
+        num_epochs=250,
         save_dir="plots",
         prediction_filter_length=None
 ):
