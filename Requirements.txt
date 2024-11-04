@@ -1,4 +1,4 @@
-tsfm_public
+tsfm_public@ git+https://github.com/ibm-granite/granite-tsfm.git
 transformers
 torch
 accelerate
