@@ -169,8 +169,8 @@ def fewshot_finetune_eval(
 
     # Create the early stopping callback
     early_stopping_callback = EarlyStoppingCallback(
-        early_stopping_patience=10,  # Number of epochs with no improvement after which to stop
-        early_stopping_threshold=0.0,  # Minimum improvement required to consider as improvement
+        early_stopping_patience=50,  # Number of epochs with no improvement after which to stop
+        early_stopping_threshold=0.001,  # Minimum improvement required to consider as improvement
     )
     tracking_callback = TrackingCallback()
 
