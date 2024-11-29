@@ -35,6 +35,7 @@ df_solar = pd.merge(df_generation.drop(columns = ['PLANT_ID']), df_weather.drop(
 df_solar = df_solar.sort_values(['SOURCE_KEY', 'DATE_TIME']).reset_index(drop=True)
 
 
+
 # adding separate time and date columns
 df_solar["DATE"] = df_solar["DATE_TIME"].dt.date
 df_solar["TIME"] = df_solar["DATE_TIME"].dt.time
@@ -52,6 +53,9 @@ df_solar['TOTAL MINUTES PASS'] = df_solar['MINUTES'] + df_solar['HOURS']*60
 df_solar["DATE_STRING"] = df_solar["DATE"].astype(str) # add column with date as string
 df_solar["HOURS"] = df_solar["HOURS"].astype(str)
 df_solar["TIME"] = df_solar["TIME"].astype(str)
+
+scaler = StandardScaler()
+df_solar[['DC_POWER', 'HOURS', 'MINUTES', 'DAY', 'MONTH', 'WEEK', 'IRRADIATION', 'MODULE_TEMPERATURE']] = scaler.fit_transform(df_solar[['DC_POWER', 'HOURS', 'MINUTES', 'DAY' , 'MONTH', 'WEEK', 'IRRADIATION', 'MODULE_TEMPERATURE']])
 
 #---------------------------------------------------------------------------------------------------------------------
 
@@ -91,7 +95,7 @@ def fewshot_finetune_eval(
         learning_rate=0.001,
         context_length=512,
         forecast_length=96,
-        fewshot_percent=20,
+        fewshot_percent=50,
         freeze_backbone=True,
         num_epochs=250,
         save_dir="plots",
