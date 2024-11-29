@@ -19,8 +19,8 @@ TTM_MODEL_REVISION = "main"
 df = pd.read_csv("GEMHouse/2a2357676efbe89fc69e96509c5e9e6527551d90a8d940715472a3a28ed8c8f.csv")
 df.columns = [0, 1]
 
-df_generation= pd.read_csv("Data/Plant_1_Generation_Data.csv")
-df_weather = pd.read_csv("Data/Plant_1_Weather_Sensor_Data.csv")
+df_generation= pd.read_csv("PVData/Plant_1_Generation_Data.csv")
+df_weather = pd.read_csv("PVData/Plant_1_Weather_Sensor_Data.csv")
 
 df_generation["DATE_TIME"] = pd.to_datetime(df_generation["DATE_TIME"], format='%d-%m-%Y %H:%M')
 df_generation['DATE_TIME'].dt.strftime('%Y-%m-%d %H:%M')
