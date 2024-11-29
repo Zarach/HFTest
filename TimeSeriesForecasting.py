@@ -58,9 +58,9 @@ df_solar["TIME"] = df_solar["TIME"].astype(str)
 
 
 column_specifiers = {
-        "timestamp_column": 0,
+        "timestamp_column": 'DATE_TIME',
         #"id_columns": id_columns,
-        "target_columns": [2],
+        "target_columns": ['DC_POWER'],
         "control_columns": [],
     }
 
@@ -85,7 +85,7 @@ split_config = {
 }
 
 train_dataset, valid_dataset, test_dataset = tsp.get_datasets(
-    df, split_config, fewshot_fraction=1.0, fewshot_location="first"
+    df_solar, split_config, fewshot_fraction=1.0, fewshot_location="first"
 )
 
 def fewshot_finetune_eval(
