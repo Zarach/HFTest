@@ -61,7 +61,7 @@ column_specifiers = {
         "timestamp_column": 'DATE_TIME',
         #"id_columns": id_columns,
         "target_columns": ['DC_POWER'],
-        "control_columns": [],
+        "control_columns": ['DAY', 'MONTH', 'WEEK', 'HOURS', 'MINUTES'],
     }
 
 tsp = TimeSeriesPreprocessor(
@@ -76,12 +76,9 @@ tsp = TimeSeriesPreprocessor(
 
 
 split_config = {
-    "train": [0, 56281],
-    "valid": [56281, 62531],
-    "test": [
-        62531,
-        68774,
-    ],
+    "train": [0, 1892],               #[0, 56281],
+    "valid": [1892, 2523],           #[56281, 62531],
+    "test": [2523, 3153],            #[62531, 68774]
 }
 
 train_dataset, valid_dataset, test_dataset = tsp.get_datasets(
@@ -203,7 +200,7 @@ def fewshot_finetune_eval(
     plot_preds(
         trainer=finetune_forecast_trainer,
         dset=train_dataset,
-        plot_dir=os.path.join("plots", "gemHouse"),
+        plot_dir=os.path.join("plots", "PV"),
         plot_prefix="test_fewshot",
         channel=0,
     )
