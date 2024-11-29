@@ -61,7 +61,7 @@ column_specifiers = {
         "timestamp_column": 'DATE_TIME',
         #"id_columns": id_columns,
         "target_columns": ['DC_POWER'],
-        "control_columns": ['DAY', 'MONTH', 'WEEK', 'HOURS', 'MINUTES'],
+        "control_columns": ['DAY', 'MONTH', 'WEEK', 'HOURS', 'MINUTES', 'IRRADIATION', 'MODULE_TEMPERATURE'],
     }
 
 tsp = TimeSeriesPreprocessor(
