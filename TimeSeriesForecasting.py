@@ -14,13 +14,53 @@ from tsfm_public import TinyTimeMixerForPrediction, TimeSeriesPreprocessor, Trac
 
 TTM_MODEL_REVISION = "main"
 
+#-----------------------------------------------------------------------------------------------------------------------------------
+
 df = pd.read_csv("GEMHouse/2a2357676efbe89fc69e96509c5e9e6527551d90a8d940715472a3a28ed8c8f.csv")
 df.columns = [0, 1]
+
+df_generation= pd.read_csv("Data/Plant_1_Generation_Data.csv")
+df_weather = pd.read_csv("Data/Plant_1_Weather_Sensor_Data.csv")
+
+df_generation["DATE_TIME"] = pd.to_datetime(df_generation["DATE_TIME"], format='%d-%m-%Y %H:%M')
+df_generation['DATE_TIME'].dt.strftime('%Y-%m-%d %H:%M')
+
+df_weather["DATE_TIME"] = pd.to_datetime(df_weather["DATE_TIME"])
+
+
+df_solar = pd.merge(df_generation.drop(columns = ['PLANT_ID']), df_weather.drop(columns = ['PLANT_ID', 'SOURCE_KEY']), on='DATE_TIME')
+# df_solar['DATE_TIME'] = pd.to_datetime(df_solar['DATE_TIME'])
+# df_solar['DATE_TIME'].strftime('%Y-%m-%d %H:%M')
+
+df_solar = df_solar.sort_values(['SOURCE_KEY', 'DATE_TIME']).reset_index(drop=True)
+
+
+# adding separate time and date columns
+df_solar["DATE"] = df_solar["DATE_TIME"].dt.date
+df_solar["TIME"] = df_solar["DATE_TIME"].dt.time
+df_solar['DAY'] = df_solar['DATE_TIME'].dt.day
+df_solar['MONTH'] = df_solar['DATE_TIME'].dt.month
+df_solar['WEEK'] = df_solar['DATE_TIME'].dt.isocalendar().week
+
+
+# add hours and minutes for ml models
+df_solar['HOURS'] = pd.to_datetime(df_solar['TIME'],format='%H:%M:%S').dt.hour
+df_solar['MINUTES'] = pd.to_datetime(df_solar['TIME'],format='%H:%M:%S').dt.minute
+df_solar['TOTAL MINUTES PASS'] = df_solar['MINUTES'] + df_solar['HOURS']*60
+
+# add date as string column
+df_solar["DATE_STRING"] = df_solar["DATE"].astype(str) # add column with date as string
+df_solar["HOURS"] = df_solar["HOURS"].astype(str)
+df_solar["TIME"] = df_solar["TIME"].astype(str)
+
+#---------------------------------------------------------------------------------------------------------------------
+
+
 
 column_specifiers = {
         "timestamp_column": 0,
         #"id_columns": id_columns,
-        "target_columns": [1],
+        "target_columns": [2],
         "control_columns": [],
     }
 
@@ -33,11 +73,16 @@ tsp = TimeSeriesPreprocessor(
     scaler_type="standard",
 )
 
+
+
 split_config = {
-                "train": [0, 12 * 30 * 24],
-                "valid": [12 * 30 * 24, 12 * 30 * 24 + 4 * 30 * 24],
-                "test": [12 * 30 * 24 + 4 * 30 * 24, 12 * 30 * 24 + 8 * 30 * 24],
-            }
+    "train": [0, 56281],
+    "valid": [56281, 62531],
+    "test": [
+        62531,
+        68774,
+    ],
+}
 
 train_dataset, valid_dataset, test_dataset = tsp.get_datasets(
     df, split_config, fewshot_fraction=1.0, fewshot_location="first"
