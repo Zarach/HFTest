@@ -65,7 +65,7 @@ column_specifiers = {
         "timestamp_column": 'DATE_TIME',
         #"id_columns": id_columns,
         "target_columns": ['DC_POWER'],
-        "control_columns": ['DAY', 'MONTH', 'WEEK', 'HOURS', 'MINUTES', 'IRRADIATION', 'MODULE_TEMPERATURE'],
+        "observable_columns": ['DAY', 'MONTH', 'WEEK', 'HOURS', 'MINUTES', 'IRRADIATION', 'MODULE_TEMPERATURE'],
     }
 
 tsp = TimeSeriesPreprocessor(
@@ -96,7 +96,7 @@ def fewshot_finetune_eval(
         context_length=512,
         forecast_length=96,
         fewshot_percent=10,
-        freeze_backbone=False,
+        freeze_backbone=True,
         num_epochs=250,
         save_dir="plots",
         prediction_filter_length=None
