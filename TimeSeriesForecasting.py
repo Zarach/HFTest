@@ -57,22 +57,22 @@ df_solar['TOTAL MINUTES PASS'] = df_solar['MINUTES'] + df_solar['HOURS']*60
 
 # add date as string column
 df_solar["DATE_STRING"] = df_solar["DATE"].astype(str) # add column with date as string
-df_solar["HOURS"] = df_solar["HOURS"].astype(str)
+#df_solar["HOURS"] = df_solar["HOURS"].astype(str)
 df_solar["TIME"] = df_solar["TIME"].astype(str)
 
 scaler = StandardScaler()
-df_solar[['DC_POWER', 'HOURS', 'MINUTES', 'DAY', 'MONTH', 'WEEK', 'IRRADIATION', 'MODULE_TEMPERATURE']] = scaler.fit_transform(df_solar[['DC_POWER', 'HOURS', 'MINUTES', 'DAY' , 'MONTH', 'WEEK', 'IRRADIATION', 'MODULE_TEMPERATURE']])
+df_solar[['DC_POWER', 'IRRADIATION', 'MODULE_TEMPERATURE']] = scaler.fit_transform(df_solar[['DC_POWER', 'IRRADIATION', 'MODULE_TEMPERATURE']])
 # df_solar['HOURS'] = sin_transformer(24).fit_transform(df_solar)['HOURS']
 # df_solar['MINUTES'] = sin_transformer(60).fit_transform(df_solar)['MINUTES']
 # df_solar['DAY'] = sin_transformer(7).fit_transform(df_solar)['DAY']
 # df_solar['MONTH'] = sin_transformer(12).fit_transform(df_solar)['MONTH']
 # df_solar['WEEK'] = sin_transformer(52).fit_transform(df_solar)['WEEK']
 
-df_solar['HOURS'] = cos_transformer(24).fit_transform(df_solar)['HOURS']
-df_solar['MINUTES'] = cos_transformer(60).fit_transform(df_solar)['MINUTES']
-df_solar['DAY'] = cos_transformer(7).fit_transform(df_solar)['DAY']
-df_solar['MONTH'] = cos_transformer(12).fit_transform(df_solar)['MONTH']
-df_solar['WEEK'] = cos_transformer(52).fit_transform(df_solar)['WEEK']
+df_solar['HOURS'] = cos_transformer(24).fit_transform(df_solar['HOURS'])
+df_solar['MINUTES'] = cos_transformer(60).fit_transform(df_solar['MINUTES'])
+df_solar['DAY'] = cos_transformer(7).fit_transform(df_solar['DAY'])
+df_solar['MONTH'] = cos_transformer(12).fit_transform(df_solar['MONTH'])
+df_solar['WEEK'] = cos_transformer(52).fit_transform(df_solar['WEEK'])
 
 
 #---------------------------------------------------------------------------------------------------------------------
