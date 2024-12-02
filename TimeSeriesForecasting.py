@@ -7,7 +7,7 @@ import pandas as pd
 import torch
 from clearml import Dataset
 from matplotlib import pyplot as plt
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, FunctionTransformer
 from torch.optim.lr_scheduler import OneCycleLR
 from transformers import Trainer, EarlyStoppingCallback, AdamW, TrainingArguments
 from tsfm_public import TinyTimeMixerForPrediction, TimeSeriesPreprocessor, TrackingCallback, count_parameters
@@ -34,6 +34,12 @@ df_solar = pd.merge(df_generation.drop(columns = ['PLANT_ID']), df_weather.drop(
 
 df_solar = df_solar.sort_values(['SOURCE_KEY', 'DATE_TIME']).reset_index(drop=True)
 
+def sin_transformer(period):
+	return FunctionTransformer(lambda x: np.sin(x / period * 2 * np.pi))
+
+def cos_transformer(period):
+	return FunctionTransformer(lambda x: np.cos(x / period * 2 * np.pi))
+
 
 
 # adding separate time and date columns
@@ -56,6 +62,18 @@ df_solar["TIME"] = df_solar["TIME"].astype(str)
 
 scaler = StandardScaler()
 df_solar[['DC_POWER', 'HOURS', 'MINUTES', 'DAY', 'MONTH', 'WEEK', 'IRRADIATION', 'MODULE_TEMPERATURE']] = scaler.fit_transform(df_solar[['DC_POWER', 'HOURS', 'MINUTES', 'DAY' , 'MONTH', 'WEEK', 'IRRADIATION', 'MODULE_TEMPERATURE']])
+# df_solar['HOURS'] = sin_transformer(24).fit_transform(df_solar)['HOURS']
+# df_solar['MINUTES'] = sin_transformer(60).fit_transform(df_solar)['MINUTES']
+# df_solar['DAY'] = sin_transformer(7).fit_transform(df_solar)['DAY']
+# df_solar['MONTH'] = sin_transformer(12).fit_transform(df_solar)['MONTH']
+# df_solar['WEEK'] = sin_transformer(52).fit_transform(df_solar)['WEEK']
+
+df_solar['HOURS'] = cos_transformer(24).fit_transform(df_solar)['HOURS']
+df_solar['MINUTES'] = cos_transformer(60).fit_transform(df_solar)['MINUTES']
+df_solar['DAY'] = cos_transformer(7).fit_transform(df_solar)['DAY']
+df_solar['MONTH'] = cos_transformer(12).fit_transform(df_solar)['MONTH']
+df_solar['WEEK'] = cos_transformer(52).fit_transform(df_solar)['WEEK']
+
 
 #---------------------------------------------------------------------------------------------------------------------
 
@@ -72,7 +90,7 @@ tsp = TimeSeriesPreprocessor(
     **column_specifiers,
     context_length=512,
     prediction_length=96,
-    scaling=True,
+    scaling=False,
     encode_categorical=False,
     scaler_type="standard",
 )
