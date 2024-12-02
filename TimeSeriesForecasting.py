@@ -96,7 +96,7 @@ def fewshot_finetune_eval(
         context_length=512,
         forecast_length=96,
         fewshot_percent=10,
-        freeze_backbone=True,
+        freeze_backbone=False,
         num_epochs=250,
         save_dir="plots",
         prediction_filter_length=None
