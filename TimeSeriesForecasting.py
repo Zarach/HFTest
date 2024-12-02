@@ -114,7 +114,7 @@ def fewshot_finetune_eval(
         context_length=512,
         forecast_length=96,
         fewshot_percent=100,
-        freeze_backbone=True,
+        freeze_backbone=False,
         num_epochs=250,
         save_dir="plots",
         prediction_filter_length=None
@@ -188,7 +188,7 @@ def fewshot_finetune_eval(
     # Create the early stopping callback
     early_stopping_callback = EarlyStoppingCallback(
         early_stopping_patience=10,  # Number of epochs with no improvement after which to stop
-        early_stopping_threshold=0.001,  # Minimum improvement required to consider as improvement
+        early_stopping_threshold=0,  # Minimum improvement required to consider as improvement
     )
     tracking_callback = TrackingCallback()
 
