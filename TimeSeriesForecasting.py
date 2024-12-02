@@ -80,9 +80,9 @@ tsp = TimeSeriesPreprocessor(
 
 
 split_config = {
-    "train": [0, 1892],               #[0, 56281],
-    "valid": [1892, 2523],           #[56281, 62531],
-    "test": [2523, 3153],            #[62531, 68774]
+    "train": [0, 40652],               #[0, 56281],
+    "valid": [40652, 56280],           #[56281, 62531],
+    "test": [56280, 68774],            #[62531, 68774]
 }
 
 train_dataset, valid_dataset, test_dataset = tsp.get_datasets(
@@ -95,7 +95,7 @@ def fewshot_finetune_eval(
         learning_rate=0.001,
         context_length=512,
         forecast_length=96,
-        fewshot_percent=50,
+        fewshot_percent=10,
         freeze_backbone=True,
         num_epochs=250,
         save_dir="plots",
@@ -169,7 +169,7 @@ def fewshot_finetune_eval(
 
     # Create the early stopping callback
     early_stopping_callback = EarlyStoppingCallback(
-        early_stopping_patience=50,  # Number of epochs with no improvement after which to stop
+        early_stopping_patience=10,  # Number of epochs with no improvement after which to stop
         early_stopping_threshold=0.001,  # Minimum improvement required to consider as improvement
     )
     tracking_callback = TrackingCallback()
