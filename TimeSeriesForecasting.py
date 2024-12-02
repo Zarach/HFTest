@@ -110,7 +110,7 @@ train_dataset, valid_dataset, test_dataset = tsp.get_datasets(
 def fewshot_finetune_eval(
         dataset_name,
         batch_size,
-        learning_rate=0.001,
+        learning_rate=0.0001,
         context_length=512,
         forecast_length=96,
         fewshot_percent=10,
